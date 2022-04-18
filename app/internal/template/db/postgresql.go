@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"github.com/jackc/pgconn"
 	"strings"
-	"template/internal/apperror"
-	"template/internal/template"
-	"template/pkg/client/postgresql"
-	"template/pkg/logging"
+	"template/app/internal/apperror"
+	template2 "template/app/internal/template"
+	"template/app/pkg/client/postgresql"
+	"template/app/pkg/logging"
 	"time"
 )
 
@@ -17,7 +17,7 @@ type db struct {
 	logger logging.Logger
 }
 
-func NewStorage(c postgresql.Client, l logging.Logger) template.Storage {
+func NewStorage(c postgresql.Client, l logging.Logger) template2.Storage {
 	return &db{
 		client: c,
 		logger: l,
@@ -28,7 +28,7 @@ func formatQuery(q string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(q, "\t", ""), "\n", "")
 }
 
-func (r *db) Create(ctx context.Context, user *template.User) error {
+func (r *db) Create(ctx context.Context, user *template2.User) error {
 	q := `
 		INSERT INTO "users" ("username", "password", "email") 
 		VALUES ($1, $2, $3) 

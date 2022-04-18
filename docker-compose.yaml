@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+  app:
+    restart: always
+    networks:
+      - backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: service
+    ports:
+      - "80:8080"
+  db:
+    image: postgres:latest
+    networks:
+      - backend
+    volumes:
+      - ./.db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /tmp
+    ports:
+      - "5432:5432"
+networks:
+  backend:

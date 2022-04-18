@@ -1,0 +1,6 @@
+apiVersion: v2
+name: "service helm chart"
+# version of helm chart
+version: 0.0.1
+# app version
+appVersion: "0.0.1"

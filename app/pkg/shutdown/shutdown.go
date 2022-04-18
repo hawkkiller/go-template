@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 	"os/signal"
-	"template/pkg/logging"
+	"template/app/pkg/logging"
 )
 
 func Graceful(signals []os.Signal, closeItems ...io.Closer) {

@@ -9,12 +9,12 @@ import (
 	"net/http"
 	"os"
 	"syscall"
-	"template/internal/config"
-	"template/internal/template"
-	"template/internal/template/db"
-	"template/pkg/client/postgresql"
-	"template/pkg/logging"
-	"template/pkg/shutdown"
+	"template/app/internal/config"
+	template2 "template/app/internal/template"
+	"template/app/internal/template/db"
+	"template/app/pkg/client/postgresql"
+	"template/app/pkg/logging"
+	"template/app/pkg/shutdown"
 	"time"
 )
 
@@ -36,13 +36,13 @@ func main() {
 
 	userStorage := db.NewStorage(postgresqlClient, logger)
 
-	userService, err := template.NewService(userStorage, logger)
+	userService, err := template2.NewService(userStorage, logger)
 
 	if err != nil {
 		logger.Fatal(err)
 	}
 
-	templateHandler := template.Handler{
+	templateHandler := template2.Handler{
 		Logger:      logger,
 		UserService: userService,
 		Validator:   validator.New(),

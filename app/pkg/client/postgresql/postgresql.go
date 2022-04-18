@@ -7,8 +7,8 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"log"
-	"template/internal/config"
-	"template/pkg/utils"
+	"template/app/internal/config"
+	"template/app/pkg/utils"
 	"time"
 )
 

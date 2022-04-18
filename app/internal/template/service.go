@@ -2,7 +2,7 @@ package template
 
 import (
 	"context"
-	"template/pkg/logging"
+	"template/app/pkg/logging"
 )
 
 type service struct {
