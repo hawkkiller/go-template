@@ -1,0 +1,10 @@
+---
+
+storage:
+  host: postgres-service
+  port: 5432
+  database: postgres
+  username: postgres
+  password: postgres
+  maxAttempts: 5
+
