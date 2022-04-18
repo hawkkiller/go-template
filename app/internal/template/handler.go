@@ -6,8 +6,8 @@ import (
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
-	apperror2 "template/app/internal/apperror"
-	"template/app/pkg/logging"
+	"template/internal/apperror"
+	"template/pkg/logging"
 )
 
 const (
@@ -21,7 +21,7 @@ type Handler struct {
 }
 
 func (h *Handler) Register(router *mux.Router) {
-	router.HandleFunc(usersURL, apperror2.Middleware(h.CreateUser)).
+	router.HandleFunc(usersURL, apperror.Middleware(h.CreateUser)).
 		Methods(http.MethodPost)
 }
 
@@ -34,13 +34,13 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) error {
 	defer r.Body.Close()
 	err := json.NewDecoder(r.Body).Decode(&userDto)
 	if err != nil {
-		return apperror2.BadRequestError("Error deserializing JSON")
+		return apperror.BadRequestError("Error deserializing JSON")
 	}
 
 	err = h.Validator.Struct(userDto)
 
 	if err != nil {
-		return apperror2.BadRequestError("Error validating JSON")
+		return apperror.BadRequestError("Error validating JSON")
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userDto.Password), bcrypt.DefaultCost)

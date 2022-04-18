@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"sync"
-	"template/app/pkg/logging"
+	"template/pkg/logging"
 )
 
 type Config struct {
