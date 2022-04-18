@@ -1,13 +1,18 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
 	"syscall"
 	"template/internal/config"
+	"template/internal/template"
+	"template/internal/template/db"
+	"template/pkg/client/postgresql"
 	"template/pkg/logging"
 	"template/pkg/shutdown"
 	"time"
@@ -23,27 +28,27 @@ func main() {
 	logger.Println("router initializing")
 	router := mux.NewRouter()
 
-	//postgresqlClient, err := postgresql.NewClient(context.Background(), cfg.Storage)
-	//if err != nil {
-	//	logger.Println("failed to connect to postgresql")
-	//	logger.Error(err)
-	//}
+	postgresqlClient, err := postgresql.NewClient(context.Background(), cfg.Storage)
+	if err != nil {
+		logger.Println("failed to connect to postgresql")
+		logger.Error(err)
+	}
 
-	//userStorage := db.NewStorage(postgresqlClient, logger)
-	//
-	//userService, err := user.NewService(userStorage, logger)
-	//
-	//if err != nil {
-	//	logger.Fatal(err)
-	//}
+	userStorage := db.NewStorage(postgresqlClient, logger)
 
-	//usersHandler := user.Handler{
-	//	Logger:      logger,
-	//	UserService: userService,
-	//	Validator:   validator.New(),
-	//}
+	userService, err := template.NewService(userStorage, logger)
 
-	//usersHandler.Register(router)
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	templateHandler := template.Handler{
+		Logger:      logger,
+		UserService: userService,
+		Validator:   validator.New(),
+	}
+
+	templateHandler.Register(router)
 
 	logger.Println("Start microservice")
 
